@@ -1,14 +1,14 @@
 package org.example.map;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.AllArgsConstructor;
+import lombok.*;
 import org.example.constants.Orientation;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Position {
-    private Point location;
+    private Location location;
     private Orientation orientation;
 }
