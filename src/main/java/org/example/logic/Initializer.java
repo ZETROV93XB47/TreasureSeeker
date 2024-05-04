@@ -4,20 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.example.constants.Action;
 import org.example.constants.Orientation;
 import org.example.dto.SimulationRulesDto;
+import org.example.exceptions.LineLengthNotMatchingException;
 import org.example.map.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static org.example.constants.Action.*;
 import static org.example.constants.Orientation.*;
-
 
 @RequiredArgsConstructor
 public class Initializer {
@@ -25,9 +22,10 @@ public class Initializer {
     private static final String PLAYER_LINE_TYPE = "A";
     private static final String TREASURE_LINE_TYPE = "T";
     private static final String MOUNTAIN_LINE_TYPE = "M";
+    private static final String COMMENT_LINE_TYPE = "#";
     private static final Logger LOGGER = LoggerFactory.getLogger(Initializer.class);
 
-    public SimulationRulesDto initialize(String instructionFilePath) {
+    public SimulationRulesDto initializeSimulationRules(String instructionFilePath) {
         int order = 0;
         MapDimensions dimensions = null;
         final List<Player> players = new ArrayList<>();
@@ -36,27 +34,38 @@ public class Initializer {
 
         try (Scanner scanner = new Scanner(new File(instructionFilePath))) {
             while (scanner.hasNextLine()) {
-                String[] line = scanner.nextLine().replace(" ", "").split("-");
+                String line = scanner.nextLine();
 
-                switch (line[0]) {
-                    case MAP_LINE_TYPE -> dimensions = createMapFromLine(line);
-                    case TREASURE_LINE_TYPE -> treasures.add(createTreasureFromLine(line));
-                    case PLAYER_LINE_TYPE -> players.add(createPlayerFromLine(line, order++));
-                    case MOUNTAIN_LINE_TYPE -> mountains.add(createMountainFromLine(line));
+                if(!String.valueOf(line.charAt(0)).equals(COMMENT_LINE_TYPE)) {
 
-                    default -> throw new IllegalArgumentException("Unknown line type");
+                    String[] splittedLine = line.replace(" ", "").split("-");
+
+                    switch (splittedLine[0]) {
+                        case MAP_LINE_TYPE -> dimensions = createMapFromLine(splittedLine);
+                        case TREASURE_LINE_TYPE -> treasures.add(createTreasureFromLine(splittedLine));
+                        case PLAYER_LINE_TYPE -> players.add(createPlayerFromLine(splittedLine, order++));
+                        case MOUNTAIN_LINE_TYPE -> mountains.add(createMountainFromLine(splittedLine));
+
+                        default -> throw new IllegalArgumentException("Unknown line type" + Arrays.toString(splittedLine));
+                    }
                 }
             }
 
         } catch (FileNotFoundException e) {
             LOGGER.error("File not found at {}", instructionFilePath);
             LOGGER.error("Exception Message {}", e.getMessage());
+            return null;
         }
 
-        return new SimulationRulesDto(new TreasureMap(dimensions, treasures, mountains), players);
+        return SimulationRulesDto.builder()
+                .map(new TreasureMap(dimensions, treasures, mountains))
+                .players(players)
+                .build();
     }
 
     private Player createPlayerFromLine(String[] line, Integer order) {
+
+        if(line.length < 6) throw new LineLengthNotMatchingException(("La ligne de création des joueurs est mal formée"));
 
         Orientation orientation = switch (line[4]) {
             case "S" -> SUD;
@@ -64,7 +73,7 @@ public class Initializer {
             case "O" -> OUEST;
             case "E" -> EST;
 
-            default -> throw new IllegalStateException("Unexpected value: " + line[4]);
+            default -> throw new IllegalArgumentException("Unexpected value for Orientation : " + line[4]);
         };
 
         final String playerName = line[1];
@@ -75,14 +84,17 @@ public class Initializer {
     }
 
     private MapDimensions createMapFromLine(String[] line) {
+        if(line.length != 3) throw new LineLengthNotMatchingException(("La ligne de création de la Carte est mal formée"));
         return new MapDimensions(Integer.valueOf(line[1]), Integer.valueOf(line[2]));
     }
 
     private Treasure createTreasureFromLine(String[] line) {
+        if(line.length != 4) throw new LineLengthNotMatchingException(("La ligne de création des coordonnées des Trésors est mal formée"));
         return new Treasure(Integer.valueOf(line[3]), new Location(Integer.valueOf(line[1]), Integer.valueOf(line[2])));
     }
 
     private Mountain createMountainFromLine(String[] line) {
+        if(line.length != 3) throw new LineLengthNotMatchingException(("La ligne de création de la Montagne est mal formée"));
         return new Mountain(new Location(Integer.valueOf(line[1]), Integer.valueOf(line[2])));
     }
 
@@ -98,7 +110,7 @@ public class Initializer {
             case "G" -> GAUCHE;
             case "D" -> DROITE;
 
-            default -> throw new IllegalStateException("Unexpected value for Action : " + action);
+            default -> throw new IllegalArgumentException("Unexpected value for Action : " + action);
         };
     }
 

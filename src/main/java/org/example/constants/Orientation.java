@@ -1,12 +1,13 @@
 package org.example.constants;
 
-import java.util.Arrays;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Arrays;
 import java.util.Optional;
-import lombok.AllArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum Orientation {
     NORD(1),
     EST(2),

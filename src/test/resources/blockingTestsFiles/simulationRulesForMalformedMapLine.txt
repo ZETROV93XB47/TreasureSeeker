@@ -1,0 +1,7 @@
+#Comment Line
+#Game Rules
+C - 3 - 3 - 5
+M - 2 - 2
+T - 1 - 1 - 2
+A - Player0 - 1 - 0 - S - AA
+A - Player1 - 0 - 1 - E - AA
