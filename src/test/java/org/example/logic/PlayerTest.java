@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.example.constants.Action.AVANCER;
-import static org.example.constants.Orientation.*;
+import static org.example.enums.Action.AVANCER;
+import static org.example.enums.Orientation.*;
 
 class PlayerTest {
 

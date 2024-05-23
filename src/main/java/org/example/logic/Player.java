@@ -1,8 +1,8 @@
 package org.example.logic;
 
 import lombok.*;
-import org.example.constants.Action;
-import org.example.constants.Orientation;
+import org.example.enums.Action;
+import org.example.enums.Orientation;
 import org.example.map.Location;
 import org.example.map.Position;
 import org.example.map.Treasure;

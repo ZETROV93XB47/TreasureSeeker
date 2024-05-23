@@ -1,7 +1,7 @@
 package org.example.logic;
 
 import lombok.NoArgsConstructor;
-import org.example.constants.Orientation;
+import org.example.enums.Orientation;
 import org.example.dto.SimulationRulesDto;
 import org.example.exceptions.SimulationDataNotInitializedException;
 import org.example.map.*;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.nonNull;
-import static org.example.constants.Orientation.getOrientation;
+import static org.example.enums.Orientation.getOrientation;
 
 @NoArgsConstructor
 public class Simulator {

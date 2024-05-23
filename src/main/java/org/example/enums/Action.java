@@ -1,10 +1,10 @@
-package org.example.constants;
+package org.example.enums;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum Action {
     AVANCER(1),
     GAUCHE(2),

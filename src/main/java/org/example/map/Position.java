@@ -1,7 +1,7 @@
 package org.example.map;
 
 import lombok.*;
-import org.example.constants.Orientation;
+import org.example.enums.Orientation;
 
 @Getter
 @Setter

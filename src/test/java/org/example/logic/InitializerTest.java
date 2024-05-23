@@ -13,9 +13,9 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.example.constants.Action.AVANCER;
-import static org.example.constants.Orientation.EST;
-import static org.example.constants.Orientation.SUD;
+import static org.example.enums.Action.AVANCER;
+import static org.example.enums.Orientation.EST;
+import static org.example.enums.Orientation.SUD;
 
 class InitializerTest {
 

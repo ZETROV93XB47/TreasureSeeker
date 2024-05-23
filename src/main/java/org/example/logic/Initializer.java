@@ -1,8 +1,8 @@
 package org.example.logic;
 
 import lombok.RequiredArgsConstructor;
-import org.example.constants.Action;
-import org.example.constants.Orientation;
+import org.example.enums.Action;
+import org.example.enums.Orientation;
 import org.example.dto.SimulationRulesDto;
 import org.example.exceptions.LineLengthNotMatchingException;
 import org.example.map.*;
@@ -13,8 +13,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
-import static org.example.constants.Action.*;
-import static org.example.constants.Orientation.*;
+import static org.example.enums.Action.*;
+import static org.example.enums.Orientation.*;
 
 @RequiredArgsConstructor
 public class Initializer {
