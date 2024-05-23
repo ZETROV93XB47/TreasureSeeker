@@ -55,10 +55,10 @@ class InitializerTest {
         String expectedMessageForUnknowLineType = "Unknown line type[K, 3, 3]";
         String expectedMessageForFakeOrientationValue = "Unexpected value for Orientation : Z";
         String expectedMessageForFakeActionValue = "Unexpected value for Action : R";
-        String expectedMessageForMalformedMapLine = "La ligne de création de la Carte est mal formée";
-        String expectedMessageForMalformedPlayerLine = "La ligne de création des joueurs est mal formée";
-        String expectedMessageForMalformedTreasureLine = "La ligne de création des coordonnées des Trésors est mal formée";
-        String expectedMessageForMalformedMountainLine = "La ligne de création de la Montagne est mal formée";
+        String expectedMessageForMalformedMapLine = "The Map creation line does not correspond to the expected format";
+        String expectedMessageForMalformedPlayerLine = "Player creation line does not match expected format";
+        String expectedMessageForMalformedTreasureLine = "The line for creating Treasure coordinates does not correspond to the expected format";
+        String expectedMessageForMalformedMountainLine = "The Mountain creation line does not correspond to the expected format";
 
         return Stream.of(
                 Arguments.of("Unknown line type Case", "src/test/resources/blockingTestsFiles/simulationRulesForUnkownLineTypeException.txt", expectedMessageForUnknowLineType, IllegalArgumentException.class),

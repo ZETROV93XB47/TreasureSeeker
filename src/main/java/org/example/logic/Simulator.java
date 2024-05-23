@@ -76,10 +76,10 @@ public class Simulator {
     private Player makeNextMove(Player player) {
 
         switch (player.getPlayerMoves().getFirst()) {
-            case GAUCHE -> player.tournerDansUnSens(this.tournerAGauche(player.getCurrentPosition()).getOrientation());
-            case DROITE -> player.tournerDansUnSens(this.tournerADroite(player.getCurrentPosition()).getOrientation());
+            case GAUCHE -> player.turn(this.turnLeft(player.getCurrentPosition()).getOrientation());
+            case DROITE -> player.turn(this.turnRight(player.getCurrentPosition()).getOrientation());
             case AVANCER ->
-                    player.avancer(moveForwardByCheckingIfTreasureMountainOrAnotherPlayerInFront(player));
+                    player.moveForward(moveForwardByCheckingIfTreasureMountainOrAnotherPlayerInFront(player));
         }
 
         player.getPlayerMoves().removeFirst();
@@ -92,7 +92,7 @@ public class Simulator {
         if(!isThereAMountain(player) && !isThereAPlayerInFrontOfMe(player)) {
 
             addTreasurIfTherIsOneOnNextLocation(player);
-            return avancer(this.treasureMap.getMapDimensions(), player.getCurrentPosition()).getLocation();
+            return moveForward(this.treasureMap.getMapDimensions(), player.getCurrentPosition()).getLocation();
         }
         else {
             return player.getCurrentPosition().getLocation();
@@ -100,7 +100,7 @@ public class Simulator {
     }
 
     private void addTreasurIfTherIsOneOnNextLocation(Player player) {
-        Location nextLocation = avancer(this.treasureMap.getMapDimensions(), player.getCurrentPosition()).getLocation();
+        Location nextLocation = moveForward(this.treasureMap.getMapDimensions(), player.getCurrentPosition()).getLocation();
 
         if (isThereATreasure(nextLocation)) {
 
@@ -146,9 +146,9 @@ public class Simulator {
         Position nextPosition;
 
         nextPosition = switch (player.getPlayerMoves().getFirst()) {
-            case DROITE -> tournerADroite(player.getCurrentPosition());
-            case GAUCHE -> tournerAGauche(player.getCurrentPosition());
-            case AVANCER -> avancer(treasureMap.getMapDimensions(), player.getCurrentPosition());
+            case DROITE -> turnRight(player.getCurrentPosition());
+            case GAUCHE -> turnLeft(player.getCurrentPosition());
+            case AVANCER -> moveForward(treasureMap.getMapDimensions(), player.getCurrentPosition());
         };
 
         return nextPosition;
@@ -157,14 +157,14 @@ public class Simulator {
     /**
      * Méthode pour faire avancer notre petit chercheur de trésors
      */
-    private Position avancer(MapDimensions mapDimensions, Position currentPosition) {
+    private Position moveForward(MapDimensions mapDimensions, Position currentPosition) {
         return new Position(getNextPositionFromOrientation(currentPosition, mapDimensions), currentPosition.getOrientation());
     }
 
     /**
      * Méthode pour faire tourner à gauche notre petit chercheur de trésors
      */
-    private Position tournerAGauche(Position currentPosition) {
+    private Position turnLeft(Position currentPosition) {
         int orientationIntValue;
 
         if(((currentPosition.getOrientation().getDirectionValue() - 1) < 1)) {
@@ -179,14 +179,14 @@ public class Simulator {
         if (orientation.isPresent()) {
             return new Position(currentPosition.getLocation(), orientation.get());
         } else {
-            throw new IllegalArgumentException("L'orientation donnée ne correspond à aucune Orientation existante ! ");
+            throw new IllegalArgumentException(" The orientation given does not correspond to any existing orientation ! ");
         }
     }
 
     /**
      * Méthode pour faire tourner à droite notre petit chercheur de trésors
      */
-    private Position tournerADroite(Position currentPosition) {
+    private Position turnRight(Position currentPosition) {
         int orientationIntValue;
 
         if(((currentPosition.getOrientation().getDirectionValue() + 1) > 4)) {
@@ -201,7 +201,7 @@ public class Simulator {
         if (orientation.isPresent()) {
             return new Position(currentPosition.getLocation(), orientation.get());
         } else {
-            throw new IllegalArgumentException("L'orientation donnée ne correspond à aucune Orientation existante ! ");
+            throw new IllegalArgumentException(" The orientation given does not correspond to any existing orientation ! ");
         }
     }
 
@@ -283,24 +283,19 @@ public class Simulator {
         return this.treasureMap.getTreasures().stream().map(this::createTreasureLine).collect(Collectors.joining("\n"));
     }
 
-    private String reportMoutain() {
+    private String reportMountain() {
         return this.treasureMap.getMountains().stream().map(this::createMountainLine).collect(Collectors.joining("\n"));
     }
 
     private String reportSimulationResult() {
-        final StringBuilder simulationreport = new StringBuilder().append("\n");
-
         final String mapReport = reportMap();
-        final String moutainReport = reportMoutain();
+        final String moutainReport = reportMountain();
         final String treasureReport = reportTreasure();
         final String playerReport = reportPlayer();
 
-        if (!mapReport.isBlank()) simulationreport.append(mapReport).append("\n");
-        if (!moutainReport.isBlank()) simulationreport.append(moutainReport).append("\n");
-        if (!treasureReport.isBlank()) simulationreport.append(treasureReport).append("\n");
-        if (!playerReport.isBlank()) simulationreport.append(playerReport).append("\n");
-
-        return simulationreport.toString();
+        return Stream.of(mapReport, moutainReport, treasureReport, playerReport)
+                .filter(report -> !report.isBlank())
+                .collect(Collectors.joining("\n"));
     }
 
 }

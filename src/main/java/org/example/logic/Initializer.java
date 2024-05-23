@@ -65,7 +65,7 @@ public class Initializer {
 
     private Player createPlayerFromLine(String[] line, Integer order) {
 
-        if(line.length < 6) throw new LineLengthNotMatchingException(("La ligne de création des joueurs est mal formée"));
+        if(line.length < 6) throw new LineLengthNotMatchingException(("Player creation line does not match expected format"));
 
         Orientation orientation = switch (line[4]) {
             case "S" -> SUD;
@@ -84,17 +84,17 @@ public class Initializer {
     }
 
     private MapDimensions createMapFromLine(String[] line) {
-        if(line.length != 3) throw new LineLengthNotMatchingException(("La ligne de création de la Carte est mal formée"));
+        if(line.length != 3) throw new LineLengthNotMatchingException(("The Map creation line does not correspond to the expected format"));
         return new MapDimensions(Integer.valueOf(line[1]), Integer.valueOf(line[2]));
     }
 
     private Treasure createTreasureFromLine(String[] line) {
-        if(line.length != 4) throw new LineLengthNotMatchingException(("La ligne de création des coordonnées des Trésors est mal formée"));
+        if(line.length != 4) throw new LineLengthNotMatchingException(("The line for creating Treasure coordinates does not correspond to the expected format"));
         return new Treasure(Integer.valueOf(line[3]), new Location(Integer.valueOf(line[1]), Integer.valueOf(line[2])));
     }
 
     private Mountain createMountainFromLine(String[] line) {
-        if(line.length != 3) throw new LineLengthNotMatchingException(("La ligne de création de la Montagne est mal formée"));
+        if(line.length != 3) throw new LineLengthNotMatchingException(("The Mountain creation line does not correspond to the expected format"));
         return new Mountain(new Location(Integer.valueOf(line[1]), Integer.valueOf(line[2])));
     }
 

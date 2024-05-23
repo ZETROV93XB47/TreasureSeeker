@@ -17,7 +17,7 @@ class PlayerTest {
         Player player0 = new Player(0, "Player0", new Position(new Location(1, 0), SUD), List.of(AVANCER, AVANCER));
 
         Position expectedPosition = new Position(new Location(1, 1), SUD);
-        player0.avancer(expectedPosition.getLocation());
+        player0.moveForward(expectedPosition.getLocation());
 
         assertThat(player0.getCurrentPosition()).isEqualTo(expectedPosition);
     }
@@ -25,7 +25,7 @@ class PlayerTest {
     @Test
     void shouldChangeOrientationToNorth() {
         Player player0 = new Player(0, "Player0", new Position(new Location(1, 0), SUD), List.of(AVANCER, AVANCER));
-        player0.tournerDansUnSens(EST);
+        player0.turn(EST);
 
         assertThat(player0.getCurrentPosition().getOrientation()).isEqualTo(EST);
     }
@@ -33,7 +33,7 @@ class PlayerTest {
     @Test
     void shouldChangeOrientationToWest() {
         Player player0 = new Player(0, "Player0", new Position(new Location(1, 0), SUD), List.of(AVANCER, AVANCER));
-        player0.tournerDansUnSens(OUEST);
+        player0.turn(OUEST);
 
         assertThat(player0.getCurrentPosition().getOrientation()).isEqualTo(OUEST);
     }
@@ -41,7 +41,7 @@ class PlayerTest {
     @Test
     void isThereAnotherMoveShouldReturnFalse() {
         Player player0 = new Player(0, "Player0", new Position(new Location(1, 0), SUD), List.of());
-        player0.tournerDansUnSens(OUEST);
+        player0.turn(OUEST);
 
         assertThat(player0.isThereAnotherMove()).isFalse();
     }
@@ -49,7 +49,7 @@ class PlayerTest {
     @Test
     void isThereAnotherMoveShouldReturnTrue() {
         Player player0 = new Player(0, "Player0", new Position(new Location(1, 0), SUD), List.of(AVANCER));
-        player0.tournerDansUnSens(OUEST);
+        player0.turn(OUEST);
 
         assertThat(player0.isThereAnotherMove()).isTrue();
     }

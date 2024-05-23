@@ -25,7 +25,7 @@ public class Player {
      * Méthode pour faire avancer notre petit chercheur de trésors
      * @param location
      */
-    public void avancer(Location location) {
+    public void moveForward(Location location) {
         this.currentPosition.setLocation(location);
     }
 
@@ -33,7 +33,7 @@ public class Player {
      * Méthode pour faire tourner  notre petit chercheur de trésors dans un sens ou l'autre (gauche ou droite)
      * @param orientation orientation du joueur
      */
-    public void tournerDansUnSens(Orientation orientation) {
+    public void turn(Orientation orientation) {
         this.currentPosition.setOrientation(orientation);
     }
 
