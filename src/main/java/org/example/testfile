@@ -1,45 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.10.xsd">
-
-    <!-- Étape 1 : Ajouter la colonne userId -->
-    <changeSet id="1-add-userId-column" author="migration">
-        <addColumn tableName="user">
-            <column name="user_id" type="BIGINT">
-                <constraints nullable="true"/>
-            </column>
-        </addColumn>
-        <rollback>
-            <dropColumn columnName="user_id" tableName="user"/>
-        </rollback>
-    </changeSet>
-
-    <!-- Étape 2 : Remplir la colonne userId pour les anciens utilisateurs -->
-    <changeSet id="2-fill-userId-values" author="migration">
-        <sql>
-            UPDATE user SET user_id = (SELECT ROW_NUMBER() OVER (ORDER BY nom)) WHERE user_id IS NULL;
-        </sql>
-        <rollback>
-            <sql>
-                UPDATE user SET user_id = NULL WHERE user_id IS NOT NULL;
-            </sql>
-        </rollback>
-    </changeSet>
-
-    <!-- Étape 3 : Modifier la clé primaire pour utiliser userId -->
-    <changeSet id="3-change-primary-key" author="migration">
-        <!-- Supprimer la clé primaire existante -->
-        <dropPrimaryKey tableName="user"/>
-        <addPrimaryKey columnNames="user_id" tableName="user" constraintName="pk_user"/>
-        <rollback>
-            <dropPrimaryKey tableName="user"/>
-            <addPrimaryKey columnNames="nom" tableName="user" constraintName="pk_user_nom"/>
-        </rollback>
-    </changeSet>
-</databaseChangeLog>
-
-db/changelog/2024-12-08-user-id-update.xml :
-
+CREATE TABLE AWARE_USER_ROLE (
+    userIgg BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(256) UNIQUE NOT NULL,
+    profile VARCHAR(256),
+    first_name VARCHAR(256),
+    last_name VARCHAR(256),
+    credit_catalog VARCHAR(10),
+    rate_catalog VARCHAR(10),
+    wwr_dr_catalog VARCHAR(10),
+    equity_catalog VARCHAR(10),
+    dfa_catalog VARCHAR(10),
+    im_schedule_catalog VARCHAR(10),
+    simmp_catalog VARCHAR(10),
+    stt_catalog VARCHAR(10),
+    initial_date TIMESTAMP,
+    modification_date TIMESTAMP,
+    windows_login VARCHAR(14),
+    admin VARCHAR(10),
+    c2_insider_catalog VARCHAR(10),
+    varsvar_catalog VARCHAR(10)
+);
